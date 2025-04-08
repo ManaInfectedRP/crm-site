@@ -32,6 +32,12 @@ var app = builder.Build();
 
 app.UseSession();
 
+// Use static files for the wwwroot folder
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
+app.MapFallbackToFile("index.html");
+
 String url = "/api";
 
 new ServerStatus(app, db, url);

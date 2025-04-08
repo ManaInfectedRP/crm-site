@@ -18,7 +18,7 @@ export default function EmployeeView() {
 
     useEffect(() => {
         getEmployees()
-    }, [user])
+    }, [])
 
     return <div className="employeeView">
         <h1>Employees</h1>

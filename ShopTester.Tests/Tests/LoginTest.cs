@@ -40,15 +40,15 @@ public class LoginTest : PageTest
         await _page.GotoAsync(url);
     }
 
-    public async Task GivenIAmLoggedIn(string email, string password)
+    public async Task Login(string email, string password)
     {
         // Click the login link in nav.
         await _page.GetByRole(AriaRole.Button, new() { Name = "Login" }).ClickAsync();
 
         // Fill out the login form and submit.
-        await _page.GetByRole(AriaRole.Textbox, new() { Name = "Email:" }).FillAsync(email);
+        await _page.GetByRole(AriaRole.Textbox, new() { Name = "Email:" }).FillAsync("abc123");
         await _page.GetByRole(AriaRole.Textbox, new() { Name = "Password:" }).ClickAsync();
-        await _page.GetByRole(AriaRole.Textbox, new() { Name = "Password:" }).FillAsync(password);
+        await _page.GetByRole(AriaRole.Textbox, new() { Name = "Password:" }).FillAsync("pas123abc123");
         await _page.GetByRole(AriaRole.Button, new() { Name = "Submit" }).ClickAsync();
 
         // Expect the page to have a welcome message and a logout button.
