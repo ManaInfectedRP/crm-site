@@ -1,0 +1,108 @@
+﻿namespace ShopTester.Tests;
+
+using System.Text.RegularExpressions;
+using Microsoft.Playwright;
+using Microsoft.Playwright.MSTest;
+
+
+[TestClass]
+public class LoginTest : PageTest
+{
+    private IPlaywright _playwright;
+    private IBrowser _browser;
+    private IBrowserContext _browserContext;
+    private IPage _page;
+
+    [TestInitialize]
+    public async Task Setup()
+    {
+        _playwright = await Microsoft.Playwright.Playwright.CreateAsync();
+        _browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
+        {
+            Headless = true,
+            //SlowMo = 1000 // Add a delay between actions
+        });
+        _browserContext = await _browser.NewContextAsync();
+        _page = await _browserContext.NewPageAsync();
+    }
+
+    [TestCleanup]
+    public async Task Cleanup()
+    {
+        await _browserContext.CloseAsync();
+        await _browser.CloseAsync();
+        _playwright.Dispose();
+    }
+
+    public async Task GivenIAmOnTheHomePage(string url)
+    {
+        // Go to the specified URL
+        await _page.GotoAsync(url);
+    }
+
+    public async Task GivenIAmLoggedIn(string email, string password)
+    {
+        // Click the login link in nav.
+        await _page.GetByRole(AriaRole.Button, new() { Name = "Login" }).ClickAsync();
+
+        // Fill out the login form and submit.
+        await _page.GetByRole(AriaRole.Textbox, new() { Name = "Email:" }).FillAsync(email);
+        await _page.GetByRole(AriaRole.Textbox, new() { Name = "Password:" }).ClickAsync();
+        await _page.GetByRole(AriaRole.Textbox, new() { Name = "Password:" }).FillAsync(password);
+        await _page.GetByRole(AriaRole.Button, new() { Name = "Submit" }).ClickAsync();
+
+        // Expect the page to have a welcome message and a logout button.
+        await Expect(_page.GetByRole(AriaRole.Button, new() { Name = "Logout" })).ToBeVisibleAsync();
+    }
+}
+
+// [TestMethod]
+// public async Task Login()
+// {
+//     // Go to main page
+//     await _page.GotoAsync("http://localhost:5000/");
+
+//     // Click the login link in nav.
+//     await _page.GetByRole(AriaRole.Button, new() { Name = "Login" }).ClickAsync();
+
+//     // Fill out the login form and submit.
+//     await _page.GetByRole(AriaRole.Textbox, new() { Name = "Email:" }).FillAsync("admin@admin.com");
+//     await _page.GetByRole(AriaRole.Textbox, new() { Name = "Password:" }).ClickAsync();
+//     await _page.GetByRole(AriaRole.Textbox, new() { Name = "Password:" }).FillAsync("admin123");
+//     await _page.GetByRole(AriaRole.Button, new() { Name = "Submit" }).ClickAsync();
+
+//     // Expect the page to have a welcome message and a logout button.
+//     await Expect(_page.Locator("#logged-in-user")).ToContainTextAsync("Welcome, Admin");
+//     await Expect(_page.GetByRole(AriaRole.Button, new() { Name = "Logout" })).ToBeVisibleAsync();
+
+//     // Click the shop link in nav.
+//     await _page.GetByRole(AriaRole.Link, new() { Name = "Shop" }).ClickAsync();
+
+//     // Expect page to have a button with the text 'Electronics'.
+//     await Expect(_page.GetByRole(AriaRole.Button, new() { Name = "Electronics" })).ToBeVisibleAsync();
+
+//     // Click the add to cart button for a laptop 2 times.
+//     await _page.Locator("#button-add-laptop").ClickAsync();
+//     await _page.Locator("#button-add-laptop").ClickAsync();
+
+//     // Expect the cart link in nav to have the text 'Cart (2)'.
+//     await Expect(_page.Locator("#nav-cart")).ToContainTextAsync("Cart (2)");
+
+//     // Click the cart link in nav.
+//     await _page.GetByRole(AriaRole.Link, new() { Name = "Cart (2)" }).ClickAsync();
+
+//     // Expect the cart page to have the text 'Laptop'.
+//     await Expect(_page.Locator("#Laptop")).ToContainTextAsync("Laptop");
+
+//     // Click the checkout button.
+//     await _page.GetByRole(AriaRole.Button, new() { Name = "Checkout" }).ClickAsync();
+
+//     // Expect the page to show order placed successfully message.
+//     await Expect(_page.GetByRole(AriaRole.Main)).ToContainTextAsync("Order placed successfully! Thank you for your purchase.");
+
+//     // Click the profile link in nav.
+//     await _page.GetByRole(AriaRole.Link, new() { Name = "Profile" }).ClickAsync();
+
+//     // Expect the profile page to have the text 'Order Product: Laptop'.
+//     await Expect(_page.GetByRole(AriaRole.Main)).ToContainTextAsync("Order Product: Laptop");
+// }
