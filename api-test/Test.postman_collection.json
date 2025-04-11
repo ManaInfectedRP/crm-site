@@ -67,10 +67,276 @@
 			]
 		},
 		{
+			"name": "UserAPI-Tester",
+			"item": [
+				{
+					"name": "Create Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('base_url','http://localhost:3000/api/')"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"admin1\",\n  \"email\": \"admin1@example.com\",\n  \"password\": \"pass123\",\n  \"company\": \"TestCompany\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}users/admin",
+							"host": [
+								"{{base_url}}users"
+							],
+							"path": [
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Employee (Admin Required)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"User created\", function () {",
+									"    pm.response.to.have.status(500);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('base_url','http://localhost:3000/api/')"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "User=sessiondata",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstname\": \"John\",\n  \"lastname\": \"Doe\",\n  \"password\": \"pass123\",\n  \"email\": \"johndoe@example.com\",\n  \"role\": \"EMPLOYEE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}users/create",
+							"host": [
+								"{{base_url}}users"
+							],
+							"path": [
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Employees by Company (Admin Required)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response is OK\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Contains employee list\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.employees).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('base_url','http://localhost:3000/api/')"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "User=sessiondata",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}users/bycompany",
+							"host": [
+								"{{base_url}}users"
+							],
+							"path": [
+								"bycompany"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User (Admin Required)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"User updated\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('base_url','http://localhost:3000/api/')"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "User=sessiondata",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstname\": \"John\",\n  \"lastname\": \"Updated\",\n  \"email\": \"johnupdated@example.com\",\n  \"role\": \"USER\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}users/2",
+							"host": [
+								"{{base_url}}users"
+							],
+							"path": [
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User (Admin Required)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"User deleted or not found\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('base_url','http://localhost:3000/api/')"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "User=sessiondata",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}users/4",
+							"host": [
+								"{{base_url}}users"
+							],
+							"path": [
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Companies",
 			"item": [
 				{
-					"name": "AllProducts",
+					"name": "GetCompanies",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -111,6 +377,74 @@
 							"raw": "{{base_url}}companies",
 							"host": [
 								"{{base_url}}companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /api/issues",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or 404\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+									"});",
+									"",
+									"if (pm.response.code === 200) {",
+									"    pm.test(\"Response should contain 'issues' array\", function () {",
+									"        const jsonData = pm.response.json();",
+									"        pm.expect(jsonData).to.have.property(\"issues\");",
+									"        pm.expect(jsonData.issues).to.be.an(\"array\");",
+									"    });",
+									"",
+									"    pm.test(\"Each issue has required properties\", function () {",
+									"        const issues = pm.response.json().issues;",
+									"        issues.forEach(issue => {",
+									"            pm.expect(issue).to.have.property(\"id\");",
+									"            pm.expect(issue).to.have.property(\"companyName\");",
+									"            pm.expect(issue).to.have.property(\"customerEmail\");",
+									"            pm.expect(issue).to.have.property(\"subject\");",
+									"            pm.expect(issue).to.have.property(\"state\");",
+									"            pm.expect(issue).to.have.property(\"title\");",
+									"            pm.expect(issue).to.have.property(\"created\");",
+									"            pm.expect(issue).to.have.property(\"latest\");",
+									"        });",
+									"    });",
+									"}",
+									"",
+									"if (pm.response.code === 404) {",
+									"    pm.test(\"Response should contain 'message' when no issues found\", function () {",
+									"        const jsonData = pm.response.json();",
+									"        pm.expect(jsonData).to.have.property(\"message\");",
+									"        pm.expect(jsonData.message).to.eql(\"No issues found.\");",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('base_url','http://localhost:3000/api/')"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}issues",
+							"host": [
+								"{{base_url}}issues"
 							]
 						}
 					},
