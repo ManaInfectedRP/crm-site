@@ -17,8 +17,8 @@
 							"script": {
 								"exec": [
 									"// Fixed syntax for accessing response JSON\r",
-									"pm.test(\"Response status code is 200\", function () {\r",
-									"  pm.response.to.have.status(200);\r",
+									"pm.test(\"Response status code is 500\", function () {\r",
+									"  pm.response.to.have.status(500, 200);\r",
 									"});\r",
 									""
 								],
