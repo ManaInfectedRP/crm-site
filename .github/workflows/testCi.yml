@@ -24,7 +24,7 @@ jobs:
       - name: Build
         run: dotnet build
       - name: Start Server
-        run: cd server && nohup dotnet run &
+        run: dotnet run --project server/
       - name: Run API-Tests
         run: newman run ./api-test/Test.postman_collection.json
 
