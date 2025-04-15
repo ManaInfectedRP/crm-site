@@ -65,11 +65,3 @@ jobs:
             nvm use v20.12.2
             cd /srv/www/halmstad/sebastian/crm-site
             git pull
-            cd client
-            npm ci
-            npm run build
-            cd ../server
-            dotnet restore
-            pm2 stop crm-site
-            pm2 delete crm-site
-            pm2 start "dotnet run" --name crm-site
