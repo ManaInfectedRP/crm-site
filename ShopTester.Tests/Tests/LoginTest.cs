@@ -19,8 +19,8 @@ public class LoginTest : PageTest
         _playwright = await Microsoft.Playwright.Playwright.CreateAsync();
         _browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
         {
-            Headless = false,
-            SlowMo = 100 // Add a delay between actions
+            Headless = true
+            //SlowMo = 100 // Add a delay between actions
         });
         _browserContext = await _browser.NewContextAsync();
         _page = await _browserContext.NewPageAsync();
