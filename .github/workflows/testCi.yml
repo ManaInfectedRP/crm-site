@@ -65,4 +65,3 @@ jobs:
             cd /srv/www/halmstad/sebastian
             git clone https://github.com/ManaInfectedRP/crm-site.git
             
-            
