@@ -47,3 +47,22 @@ jobs:
         run: cd server && nohup dotnet run &
       - name: Run GUI-tests
         run: cd ShopTester.Tests && dotnet test
+        
+  deploy:
+    name: Deploy to Server
+    runs-on: ubuntu-latest
+    needs: [ api_tests, gui_tests ] # Kör endast om alla tidigare tester är OK
+    steps:
+      - name: Deploy App
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: |
+            source /root/.nvm/nvm.sh
+            nvm use v20.12.2
+            cd /srv/www/halmstad/sebastian
+            git clone https://github.com/ManaInfectedRP/crm-site.git
+            
