@@ -3,6 +3,7 @@
 ### CRM Länkar
 - ( CRM_Förstudie ) https://docs.google.com/document/d/1-Oq8TGTh17ZhH_6MfP6KS1kZsMwbEXbKTGaiG7TXYxw/edit?usp=sharing
 - ( Testfall_CRMSupport ) https://docs.google.com/spreadsheets/d/1mSlT9mL-76r3pYJGQzDBfUYr_Vr7AwJGe6qO_KWrqdk/edit?usp=sharing
+- ( CRM_Slutrapport ) https://docs.google.com/document/d/14wNas9D50RstrI10c1s1aVnEtjHoqVsTo4x_QvjHKJU/edit?usp=sharing
 
 ## Setup
 ### Install dependencis
