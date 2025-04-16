@@ -135,8 +135,8 @@ public class LoginTest : PageTest
     [TestMethod]
     public async Task LoginAndChangeIssueToOpenThenClosedAndBackToNew()
     {
-        
         await _page.GotoAsync("http://localhost:3000/");
+
         // Click the login link in nav.
         await _page.GetByText("Login").ClickAsync();
 
@@ -148,42 +148,31 @@ public class LoginTest : PageTest
 
         // Expect the page to have a logout button.
         await Expect(_page.GetByRole(AriaRole.Button, new() { Name = "Logout" })).ToBeVisibleAsync();
-        
-        //ENTER ISSUES PAGE
+
+        // ENTER ISSUES PAGE
         await _page.GetByText("Issues").ClickAsync();
-        
+
         #region Change STATUS to OPEN
-        //CLICKS ON EDIT BUTTON FOR FIRST ISSUE
         await _page.Locator("button.subjectEditButton").First.ClickAsync();
-        
-        //CHANGE STATUS ON ISSUE TO OPEN
-        await _page.Locator("select.stateSelect").SelectOptionAsync("OPEN");
-
-        await _page.Locator("button.stateUpdateButton").ClickAsync();
-        #endregion
-        
-        #region Change STATUS to NEW
-        //CLICKS ON EDIT BUTTON FOR FIRST ISSUE
-        await _page.Locator("button.subjectEditButton").First.ClickAsync();
-        
-        //CHANGE STATUS ON ISSUE TO CLOSED
-        await _page.Locator("select.stateSelect").SelectOptionAsync("CLOSED");
-
-        await _page.Locator("button.stateUpdateButton").ClickAsync();
-        #endregion
-
-        #region Change STATUS to NEW
-        //CLICKS ON EDIT BUTTON FOR FIRST ISSUE
-        await _page.Locator("button.subjectEditButton").First.ClickAsync();
-        
-        //CHANGE STATUS ON ISSUE TO NEW
-        await _page.Locator("select.stateSelect").First.SelectOptionAsync("NEW");
-
+        await _page.Locator("select.stateSelect").First.SelectOptionAsync("OPEN");
         await _page.Locator("button.stateUpdateButton").First.ClickAsync();
         #endregion
-        await _page.GetByRole(AriaRole.Button, new() { Name = "Logout" }).ClickAsync();
 
+        #region Change STATUS to CLOSED
+        await _page.Locator("button.subjectEditButton").First.ClickAsync();
+        await _page.Locator("select.stateSelect").First.SelectOptionAsync("CLOSED");
+        await _page.Locator("button.stateUpdateButton").First.ClickAsync();
+        #endregion
+
+        #region Change STATUS to NEW
+        await _page.Locator("button.subjectEditButton").First.ClickAsync();
+        await _page.Locator("select.stateSelect").First.SelectOptionAsync("NEW");
+        await _page.Locator("button.stateUpdateButton").First.ClickAsync();
+        #endregion
+
+        await _page.GetByRole(AriaRole.Button, new() { Name = "Logout" }).ClickAsync();
     }
+
     
     [TestMethod]
     public async Task RegisterUser_HandlesSuccessOrFailure()
