@@ -177,9 +177,9 @@ public class LoginTest : PageTest
         await _page.Locator("button.subjectEditButton").First.ClickAsync();
         
         //CHANGE STATUS ON ISSUE TO NEW
-        await _page.Locator("select.stateSelect").SelectOptionAsync("NEW");
+        await _page.Locator("select.stateSelect").First.SelectOptionAsync("NEW");
 
-        await _page.Locator("button.stateUpdateButton").ClickAsync();
+        await _page.Locator("button.stateUpdateButton").First.ClickAsync();
         #endregion
         await _page.GetByRole(AriaRole.Button, new() { Name = "Logout" }).ClickAsync();
 
