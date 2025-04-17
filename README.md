@@ -5,6 +5,8 @@
 - ( Testfall_CRMSupport ) https://docs.google.com/spreadsheets/d/1mSlT9mL-76r3pYJGQzDBfUYr_Vr7AwJGe6qO_KWrqdk/edit?usp=sharing
 - ( CRM_Slutrapport ) https://docs.google.com/document/d/14wNas9D50RstrI10c1s1aVnEtjHoqVsTo4x_QvjHKJU/edit?usp=sharing
 
+- ( Testning - Kunskapsfårgor ) : https://docs.google.com/document/d/1Yf0VQTZpnJcjd-MrZ8-BDW7hgsTpjM7S2gnHTd8lVoU/edit?usp=sharing
+
 ## Setup
 ### Install dependencis
 - In the terminal, open client and run "npm install". 
